@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package apiproto;
+
+option go_package = "github.com/akbarshoh/microOLX/OrderManagement/proto";
+
+message OrderResponse {
+  int32 id = 1;
+  int32 user_id = 2;
+  string opened_at = 3;
+  string closed_at = 4;
+  int32 price = 5;
+}
+
+message PaymentRequest{
+  int32 id = 1;
+  int32 user_id = 2;
+}
+
+message Request {
+  int32 id = 1;
+}
+
+service OrderService {
+  rpc GetOrder(Request) returns (OrderResponse) {}
+}
