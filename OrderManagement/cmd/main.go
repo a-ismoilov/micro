@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/akbarshoh/microOLX/OrderManagement/config"
-	"github.com/akbarshoh/microOLX/OrderManagement/repository/postgres"
-	"github.com/akbarshoh/microOLX/OrderManagement/service"
+	"github.com/akbarshoh/microOLX/config"
+	"github.com/akbarshoh/microOLX/repository/postgres"
+	"github.com/akbarshoh/microOLX/service"
 	"log"
 )
 
