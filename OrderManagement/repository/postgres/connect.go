@@ -3,10 +3,11 @@ package postgres
 import (
 	"database/sql"
 	"fmt"
-	"github.com/akbarshoh/microOLX/OrderManagement/config"
+	"github.com/akbarshoh/microOLX/config"
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
+	_ "github.com/lib/pq"
 )
 
 func ConnectDB(cfg config.Config) (*sql.DB, error) {
@@ -25,7 +26,7 @@ func ConnectDB(cfg config.Config) (*sql.DB, error) {
 		return nil, err
 	}
 	m, err := migrate.NewWithDatabaseInstance(
-		"file://OrderManagement/migrations",
+		"file://migrations",
 		"olx",
 		driver,
 	)

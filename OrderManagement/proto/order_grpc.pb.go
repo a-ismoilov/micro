@@ -22,7 +22,11 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type OrderServiceClient interface {
-	GetOrder(ctx context.Context, in *Request, opts ...grpc.CallOption) (*OrderResponse, error)
+	GetOrder(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Order, error)
+	Choose(ctx context.Context, in *MealChoice, opts ...grpc.CallOption) (*OK, error)
+	Payment(ctx context.Context, in *Request, opts ...grpc.CallOption) (*OK, error)
+	MealList(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Meals, error)
+	OrderList(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Orders, error)
 }
 
 type orderServiceClient struct {
@@ -33,9 +37,45 @@ func NewOrderServiceClient(cc grpc.ClientConnInterface) OrderServiceClient {
 	return &orderServiceClient{cc}
 }
 
-func (c *orderServiceClient) GetOrder(ctx context.Context, in *Request, opts ...grpc.CallOption) (*OrderResponse, error) {
-	out := new(OrderResponse)
+func (c *orderServiceClient) GetOrder(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Order, error) {
+	out := new(Order)
 	err := c.cc.Invoke(ctx, "/apiproto.OrderService/GetOrder", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *orderServiceClient) Choose(ctx context.Context, in *MealChoice, opts ...grpc.CallOption) (*OK, error) {
+	out := new(OK)
+	err := c.cc.Invoke(ctx, "/apiproto.OrderService/Choose", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *orderServiceClient) Payment(ctx context.Context, in *Request, opts ...grpc.CallOption) (*OK, error) {
+	out := new(OK)
+	err := c.cc.Invoke(ctx, "/apiproto.OrderService/Payment", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *orderServiceClient) MealList(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Meals, error) {
+	out := new(Meals)
+	err := c.cc.Invoke(ctx, "/apiproto.OrderService/MealList", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *orderServiceClient) OrderList(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Orders, error) {
+	out := new(Orders)
+	err := c.cc.Invoke(ctx, "/apiproto.OrderService/OrderList", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +86,11 @@ func (c *orderServiceClient) GetOrder(ctx context.Context, in *Request, opts ...
 // All implementations must embed UnimplementedOrderServiceServer
 // for forward compatibility
 type OrderServiceServer interface {
-	GetOrder(context.Context, *Request) (*OrderResponse, error)
+	GetOrder(context.Context, *Request) (*Order, error)
+	Choose(context.Context, *MealChoice) (*OK, error)
+	Payment(context.Context, *Request) (*OK, error)
+	MealList(context.Context, *Request) (*Meals, error)
+	OrderList(context.Context, *Request) (*Orders, error)
 	mustEmbedUnimplementedOrderServiceServer()
 }
 
@@ -54,8 +98,20 @@ type OrderServiceServer interface {
 type UnimplementedOrderServiceServer struct {
 }
 
-func (UnimplementedOrderServiceServer) GetOrder(context.Context, *Request) (*OrderResponse, error) {
+func (UnimplementedOrderServiceServer) GetOrder(context.Context, *Request) (*Order, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetOrder not implemented")
+}
+func (UnimplementedOrderServiceServer) Choose(context.Context, *MealChoice) (*OK, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Choose not implemented")
+}
+func (UnimplementedOrderServiceServer) Payment(context.Context, *Request) (*OK, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Payment not implemented")
+}
+func (UnimplementedOrderServiceServer) MealList(context.Context, *Request) (*Meals, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method MealList not implemented")
+}
+func (UnimplementedOrderServiceServer) OrderList(context.Context, *Request) (*Orders, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method OrderList not implemented")
 }
 func (UnimplementedOrderServiceServer) mustEmbedUnimplementedOrderServiceServer() {}
 
@@ -88,6 +144,78 @@ func _OrderService_GetOrder_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _OrderService_Choose_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MealChoice)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrderServiceServer).Choose(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/apiproto.OrderService/Choose",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrderServiceServer).Choose(ctx, req.(*MealChoice))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrderService_Payment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Request)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrderServiceServer).Payment(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/apiproto.OrderService/Payment",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrderServiceServer).Payment(ctx, req.(*Request))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrderService_MealList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Request)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrderServiceServer).MealList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/apiproto.OrderService/MealList",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrderServiceServer).MealList(ctx, req.(*Request))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrderService_OrderList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Request)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrderServiceServer).OrderList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/apiproto.OrderService/OrderList",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrderServiceServer).OrderList(ctx, req.(*Request))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // OrderService_ServiceDesc is the grpc.ServiceDesc for OrderService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -98,6 +226,22 @@ var OrderService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetOrder",
 			Handler:    _OrderService_GetOrder_Handler,
+		},
+		{
+			MethodName: "Choose",
+			Handler:    _OrderService_Choose_Handler,
+		},
+		{
+			MethodName: "Payment",
+			Handler:    _OrderService_Payment_Handler,
+		},
+		{
+			MethodName: "MealList",
+			Handler:    _OrderService_MealList_Handler,
+		},
+		{
+			MethodName: "OrderList",
+			Handler:    _OrderService_OrderList_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
