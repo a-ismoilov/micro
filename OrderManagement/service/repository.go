@@ -2,13 +2,16 @@ package service
 
 import (
 	"context"
-	"github.com/akbarshoh/microOLX/proto"
+	"github.com/akbarshoh/microOLX/protos/orderproto"
 )
 
 type Repository interface {
-	GetOrder(ctx context.Context, request proto.Request) (proto.Order, error)
-	Payment(ctx context.Context, request proto.Request) error
-	Choose(ctx context.Context, request proto.Request) error
-	MealList(ctx context.Context, request proto.Request) (proto.Meals, error)
-	OrderList(ctx context.Context, request proto.Request) (proto.Orders, error)
+	GetOrder(ctx context.Context, request orderproto.Request) (orderproto.Order, error)
+	Payment(ctx context.Context, request orderproto.Request) error
+	Choose(ctx context.Context, request orderproto.Request) error
+	MealList(ctx context.Context, request orderproto.Request) (orderproto.Meals, error)
+	OrderList(ctx context.Context, request orderproto.Request) (orderproto.Orders, error)
+	Cancel(context.Context, *orderproto.Request) error
+	NewMeal(context.Context, *orderproto.Meal) error
+	NewOrder(context.Context, *orderproto.Order) error
 }

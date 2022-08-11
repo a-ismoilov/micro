@@ -2,33 +2,29 @@ package main
 
 import (
 	"github.com/akbarshoh/microOLX/config"
-	"github.com/akbarshoh/microOLX/proto"
+	"github.com/akbarshoh/microOLX/protos/orderproto"
 	"github.com/akbarshoh/microOLX/repository/postgres"
 	"github.com/akbarshoh/microOLX/server"
-	"github.com/akbarshoh/microOLX/service"
+	service2 "github.com/akbarshoh/microOLX/service"
 	"google.golang.org/grpc"
 	"log"
 	"net"
 )
 
 func main() {
-	db, err := postgres.ConnectDB(config.Load())
+	cfg := config.Load()
+	db, err := postgres.ConnectDB(cfg)
 	if err != nil {
-		log.Fatalln(err, "ha")
+		log.Fatalln(err)
 	}
-	p := postgres.PostgresRepository{
-		DB: db,
-	}
-	service.Handle(p)
 
-	lis, err := net.Listen("tcp", ":6666")
+	lis, err := net.Listen("tcp", cfg.Port)
 	if err != nil {
-		log.Fatalln(err, "yoq")
+		log.Fatalln(err)
 	}
 
 	s := grpc.NewServer()
-
-	proto.RegisterOrderServiceServer(s, &server.Server{})
+	orderproto.RegisterOrderServiceServer(s, server.New(service2.New(postgres.New(db))))
 
 	if err := s.Serve(lis); err != nil {
 		log.Fatalln(err, "bor")

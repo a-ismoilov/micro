@@ -2,14 +2,20 @@ syntax = "proto3";
 
 package proto;
 
-option go_package = "github.com/akbarshoh/microOLX/proto";
+option go_package = "github.com/akbarshoh/microOLX/userproto";
 
 message Order {
   int32 id = 1;
   int32 user_id = 2;
-  string opened_at = 3;
-  string closed_at = 4;
-  int32 price = 5;
+  int32 basket_id = 3;
+  string opened_at = 4;
+  string closed_at = 5;
+  int32 price = 6;
+}
+
+message Basket{
+  int32 id = 1;
+  repeated int32 List = 2;
 }
 
 message Orders {
@@ -39,11 +45,13 @@ message Request {
   int32 id = 1;
 }
 
-
 service OrderService {
   rpc GetOrder(Request) returns (Order) {}
   rpc Choose(MealChoice) returns (OK) {}
   rpc Payment(Request) returns (OK) {}
   rpc MealList(Request) returns (Meals) {}
   rpc OrderList(Request) returns (Orders) {}
+  rpc Cancel(Request) returns (OK) {}
+  rpc NewMeal(Meal) returns (OK) {}
+  rpc NewOrder(Order) returns (OK) {}
 }

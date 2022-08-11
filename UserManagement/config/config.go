@@ -13,11 +13,11 @@ type Config struct {
 func Load() Config {
 	return Config{
 		Host:           "localhost",
-		Port:           ":1111",
+		Port:           ":2222",
 		PostgresHost:   "localhost",
 		PostgresPort:   "5432",
 		PostgresUser:   "akbarshoh",
 		PostgresPass:   "1",
-		PostgresDbname: "orders",
+		PostgresDbname: "users",
 	}
 }
