@@ -13,5 +13,5 @@ type Repository interface {
 	OrderList(ctx context.Context, request orderproto.Request) (orderproto.Orders, error)
 	Cancel(context.Context, *orderproto.Request) error
 	NewMeal(context.Context, *orderproto.Meal) error
-	NewOrder(context.Context, *orderproto.Order) error
+	UpdateMeal(context.Context, *orderproto.Meal) error
 }

@@ -1,0 +1,436 @@
+definitions:
+  orderproto.Meal:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      price:
+        type: integer
+    type: object
+  orderproto.MealChoice:
+    properties:
+      id:
+        type: integer
+      order_id:
+        type: integer
+    type: object
+  orderproto.Meals:
+    properties:
+      List:
+        items:
+          $ref: '#/definitions/orderproto.Meal'
+        type: array
+    type: object
+  orderproto.OK:
+    properties:
+      OK:
+        type: string
+    type: object
+  orderproto.Order:
+    properties:
+      basket_id:
+        type: integer
+      closed_at:
+        type: string
+      id:
+        type: integer
+      opened_at:
+        type: string
+      price:
+        type: integer
+      user_id:
+        type: integer
+    type: object
+  orderproto.Orders:
+    properties:
+      List:
+        items:
+          $ref: '#/definitions/orderproto.Order'
+        type: array
+    type: object
+  userproto.Admin:
+    properties:
+      id:
+        type: integer
+      password:
+        type: string
+    type: object
+  userproto.PayRequest:
+    properties:
+      id:
+        type: integer
+      order_id:
+        type: integer
+    type: object
+  userproto.Response:
+    properties:
+      OK:
+        type: string
+    type: object
+  userproto.User:
+    properties:
+      budget:
+        type: integer
+      id:
+        type: integer
+      username:
+        type: string
+    type: object
+  userproto.Users:
+    properties:
+      List:
+        items:
+          $ref: '#/definitions/userproto.User'
+        type: array
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: This is a new online ordering app with go.
+  title: Online Ordering Micro
+  version: "1.0"
+paths:
+  /admin/log:
+    post:
+      consumes:
+      - application/json
+      description: admin should log to get access
+      parameters:
+      - description: admin password and id
+        in: body
+        name: password&id
+        required: true
+        schema:
+          $ref: '#/definitions/userproto.Admin'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/userproto.Response'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: login
+      tags:
+      - admin
+  /admin/new-meal:
+    post:
+      consumes:
+      - application/json
+      description: admin adds new meal
+      parameters:
+      - description: meal struct
+        in: body
+        name: meal_struct
+        required: true
+        schema:
+          $ref: '#/definitions/orderproto.Meal'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/orderproto.OK'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: New
+      tags:
+      - admin
+  /admin/order-list:
+    get:
+      consumes:
+      - application/json
+      description: shows orders to admin
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/orderproto.Orders'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: OrderList
+      tags:
+      - admin
+  /admin/update-meal:
+    put:
+      consumes:
+      - application/json
+      description: admin update existing meal
+      parameters:
+      - description: meal struct
+        in: body
+        name: struct
+        required: true
+        schema:
+          $ref: '#/definitions/orderproto.Meal'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/orderproto.OK'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Update
+      tags:
+      - admin
+  /admin/user-list:
+    get:
+      consumes:
+      - application/json
+      description: admin gets users list
+      parameters:
+      - description: admin with id
+        in: body
+        name: admin
+        required: true
+        schema:
+          $ref: '#/definitions/userproto.Admin'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/userproto.Users'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: users
+      tags:
+      - admin
+  /user/get-order:id:
+    get:
+      consumes:
+      - application/json
+      description: get order by order_id
+      parameters:
+      - description: order id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/orderproto.Order'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: GetOrder
+      tags:
+      - user
+  /user/log:
+    post:
+      consumes:
+      - application/json
+      description: user should log to get access
+      parameters:
+      - description: user struct
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/userproto.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/userproto.Response'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: UserLogin
+      tags:
+      - user
+  /user/log/cancel:id:
+    delete:
+      consumes:
+      - application/json
+      description: cancels user order
+      parameters:
+      - description: order id
+        in: path
+        name: order_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/orderproto.OK'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Cancel
+      tags:
+      - user
+  /user/menu:
+    get:
+      consumes:
+      - application/json
+      description: shows menu to user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/orderproto.Meals'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: MealList
+      tags:
+      - user
+  /user/menu/choose:
+    post:
+      consumes:
+      - application/json
+      description: user chooses meal
+      parameters:
+      - description: meal id and order id
+        in: body
+        name: meal_id
+        required: true
+        schema:
+          $ref: '#/definitions/orderproto.MealChoice'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/orderproto.OK'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Choose
+      tags:
+      - user
+  /user/pay:
+    post:
+      consumes:
+      - application/json
+      description: user pays his order
+      parameters:
+      - description: user id and order id
+        in: body
+        name: order_id
+        required: true
+        schema:
+          $ref: '#/definitions/userproto.PayRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/orderproto.OK'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Payment
+      tags:
+      - user
+swagger: "2.0"
