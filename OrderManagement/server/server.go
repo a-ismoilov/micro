@@ -40,6 +40,6 @@ func (s *Server) Cancel(context.Context, *orderproto.Request) (*orderproto.OK, e
 func (s *Server) NewMeal(context.Context, *orderproto.Meal) (*orderproto.OK, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method NewMeal not implemented")
 }
-func (s *Server) NewOrder(context.Context, *orderproto.Order) (*orderproto.OK, error) {
+func (s *Server) UpdateMeal(context.Context, *orderproto.Meal) (*orderproto.OK, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method NewOrder not implemented")
 }

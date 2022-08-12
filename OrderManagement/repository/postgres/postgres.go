@@ -44,7 +44,7 @@ func (p PostgresRepository) Cancel(context.Context, *orderproto.Request) error {
 func (p PostgresRepository) NewMeal(context.Context, *orderproto.Meal) error {
 	return status.Errorf(codes.Unimplemented, "method NewMeal not implemented")
 }
-func (p PostgresRepository) NewOrder(context.Context, *orderproto.Order) error {
+func (p PostgresRepository) UpdateMeal(context.Context, *orderproto.Meal) error {
 	return status.Errorf(codes.Unimplemented, "method NewOrder not implemented")
 }
 

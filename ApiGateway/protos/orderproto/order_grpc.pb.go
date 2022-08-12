@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.2.0
 // - protoc             v3.21.4
-// source: userproto/order.userproto
+// source: protos/orderproto/order.proto
 
 package orderproto
 
@@ -29,7 +29,7 @@ type OrderServiceClient interface {
 	OrderList(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Orders, error)
 	Cancel(ctx context.Context, in *Request, opts ...grpc.CallOption) (*OK, error)
 	NewMeal(ctx context.Context, in *Meal, opts ...grpc.CallOption) (*OK, error)
-	NewOrder(ctx context.Context, in *Order, opts ...grpc.CallOption) (*OK, error)
+	UpdateMeal(ctx context.Context, in *Meal, opts ...grpc.CallOption) (*OK, error)
 }
 
 type orderServiceClient struct {
@@ -42,7 +42,7 @@ func NewOrderServiceClient(cc grpc.ClientConnInterface) OrderServiceClient {
 
 func (c *orderServiceClient) GetOrder(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Order, error) {
 	out := new(Order)
-	err := c.cc.Invoke(ctx, "/userproto.OrderService/GetOrder", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/proto.OrderService/GetOrder", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -51,7 +51,7 @@ func (c *orderServiceClient) GetOrder(ctx context.Context, in *Request, opts ...
 
 func (c *orderServiceClient) Choose(ctx context.Context, in *MealChoice, opts ...grpc.CallOption) (*OK, error) {
 	out := new(OK)
-	err := c.cc.Invoke(ctx, "/userproto.OrderService/Choose", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/proto.OrderService/Choose", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -60,7 +60,7 @@ func (c *orderServiceClient) Choose(ctx context.Context, in *MealChoice, opts ..
 
 func (c *orderServiceClient) Payment(ctx context.Context, in *Request, opts ...grpc.CallOption) (*OK, error) {
 	out := new(OK)
-	err := c.cc.Invoke(ctx, "/userproto.OrderService/Payment", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/proto.OrderService/Payment", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -69,7 +69,7 @@ func (c *orderServiceClient) Payment(ctx context.Context, in *Request, opts ...g
 
 func (c *orderServiceClient) MealList(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Meals, error) {
 	out := new(Meals)
-	err := c.cc.Invoke(ctx, "/userproto.OrderService/MealList", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/proto.OrderService/MealList", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -78,7 +78,7 @@ func (c *orderServiceClient) MealList(ctx context.Context, in *Request, opts ...
 
 func (c *orderServiceClient) OrderList(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Orders, error) {
 	out := new(Orders)
-	err := c.cc.Invoke(ctx, "/userproto.OrderService/OrderList", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/proto.OrderService/OrderList", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -87,7 +87,7 @@ func (c *orderServiceClient) OrderList(ctx context.Context, in *Request, opts ..
 
 func (c *orderServiceClient) Cancel(ctx context.Context, in *Request, opts ...grpc.CallOption) (*OK, error) {
 	out := new(OK)
-	err := c.cc.Invoke(ctx, "/userproto.OrderService/Cancel", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/proto.OrderService/Cancel", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -96,16 +96,16 @@ func (c *orderServiceClient) Cancel(ctx context.Context, in *Request, opts ...gr
 
 func (c *orderServiceClient) NewMeal(ctx context.Context, in *Meal, opts ...grpc.CallOption) (*OK, error) {
 	out := new(OK)
-	err := c.cc.Invoke(ctx, "/userproto.OrderService/NewMeal", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/proto.OrderService/NewMeal", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *orderServiceClient) NewOrder(ctx context.Context, in *Order, opts ...grpc.CallOption) (*OK, error) {
+func (c *orderServiceClient) UpdateMeal(ctx context.Context, in *Meal, opts ...grpc.CallOption) (*OK, error) {
 	out := new(OK)
-	err := c.cc.Invoke(ctx, "/userproto.OrderService/NewOrder", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/proto.OrderService/UpdateMeal", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -123,7 +123,7 @@ type OrderServiceServer interface {
 	OrderList(context.Context, *Request) (*Orders, error)
 	Cancel(context.Context, *Request) (*OK, error)
 	NewMeal(context.Context, *Meal) (*OK, error)
-	NewOrder(context.Context, *Order) (*OK, error)
+	UpdateMeal(context.Context, *Meal) (*OK, error)
 	mustEmbedUnimplementedOrderServiceServer()
 }
 
@@ -152,8 +152,8 @@ func (UnimplementedOrderServiceServer) Cancel(context.Context, *Request) (*OK, e
 func (UnimplementedOrderServiceServer) NewMeal(context.Context, *Meal) (*OK, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method NewMeal not implemented")
 }
-func (UnimplementedOrderServiceServer) NewOrder(context.Context, *Order) (*OK, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method NewOrder not implemented")
+func (UnimplementedOrderServiceServer) UpdateMeal(context.Context, *Meal) (*OK, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateMeal not implemented")
 }
 func (UnimplementedOrderServiceServer) mustEmbedUnimplementedOrderServiceServer() {}
 
@@ -178,7 +178,7 @@ func _OrderService_GetOrder_Handler(srv interface{}, ctx context.Context, dec fu
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/userproto.OrderService/GetOrder",
+		FullMethod: "/proto.OrderService/GetOrder",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(OrderServiceServer).GetOrder(ctx, req.(*Request))
@@ -196,7 +196,7 @@ func _OrderService_Choose_Handler(srv interface{}, ctx context.Context, dec func
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/userproto.OrderService/Choose",
+		FullMethod: "/proto.OrderService/Choose",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(OrderServiceServer).Choose(ctx, req.(*MealChoice))
@@ -214,7 +214,7 @@ func _OrderService_Payment_Handler(srv interface{}, ctx context.Context, dec fun
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/userproto.OrderService/Payment",
+		FullMethod: "/proto.OrderService/Payment",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(OrderServiceServer).Payment(ctx, req.(*Request))
@@ -232,7 +232,7 @@ func _OrderService_MealList_Handler(srv interface{}, ctx context.Context, dec fu
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/userproto.OrderService/MealList",
+		FullMethod: "/proto.OrderService/MealList",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(OrderServiceServer).MealList(ctx, req.(*Request))
@@ -250,7 +250,7 @@ func _OrderService_OrderList_Handler(srv interface{}, ctx context.Context, dec f
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/userproto.OrderService/OrderList",
+		FullMethod: "/proto.OrderService/OrderList",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(OrderServiceServer).OrderList(ctx, req.(*Request))
@@ -268,7 +268,7 @@ func _OrderService_Cancel_Handler(srv interface{}, ctx context.Context, dec func
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/userproto.OrderService/Cancel",
+		FullMethod: "/proto.OrderService/Cancel",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(OrderServiceServer).Cancel(ctx, req.(*Request))
@@ -286,7 +286,7 @@ func _OrderService_NewMeal_Handler(srv interface{}, ctx context.Context, dec fun
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/userproto.OrderService/NewMeal",
+		FullMethod: "/proto.OrderService/NewMeal",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(OrderServiceServer).NewMeal(ctx, req.(*Meal))
@@ -294,20 +294,20 @@ func _OrderService_NewMeal_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
-func _OrderService_NewOrder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Order)
+func _OrderService_UpdateMeal_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Meal)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(OrderServiceServer).NewOrder(ctx, in)
+		return srv.(OrderServiceServer).UpdateMeal(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/userproto.OrderService/NewOrder",
+		FullMethod: "/proto.OrderService/UpdateMeal",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OrderServiceServer).NewOrder(ctx, req.(*Order))
+		return srv.(OrderServiceServer).UpdateMeal(ctx, req.(*Meal))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -316,7 +316,7 @@ func _OrderService_NewOrder_Handler(srv interface{}, ctx context.Context, dec fu
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var OrderService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "userproto.OrderService",
+	ServiceName: "proto.OrderService",
 	HandlerType: (*OrderServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -348,10 +348,10 @@ var OrderService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _OrderService_NewMeal_Handler,
 		},
 		{
-			MethodName: "NewOrder",
-			Handler:    _OrderService_NewOrder_Handler,
+			MethodName: "UpdateMeal",
+			Handler:    _OrderService_UpdateMeal_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "userproto/order.userproto",
+	Metadata: "protos/orderproto/order.proto",
 }

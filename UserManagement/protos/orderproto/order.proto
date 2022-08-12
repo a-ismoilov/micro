@@ -53,5 +53,5 @@ service OrderService {
   rpc OrderList(Request) returns (Orders) {}
   rpc Cancel(Request) returns (OK) {}
   rpc NewMeal(Meal) returns (OK) {}
-  rpc NewOrder(Order) returns (OK) {}
+  rpc UpdateMeal(Meal) returns (OK) {}
 }

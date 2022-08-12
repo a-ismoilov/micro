@@ -38,6 +38,6 @@ func (Service) Cancel(context.Context, *orderproto.Request) error {
 func (Service) NewMeal(context.Context, *orderproto.Meal) error {
 	return status.Errorf(codes.Unimplemented, "method NewMeal not implemented")
 }
-func (Service) NewOrder(context.Context, *orderproto.Order) error {
+func (Service) UpdateMeal(context.Context, *orderproto.Meal) error {
 	return status.Errorf(codes.Unimplemented, "method NewOrder not implemented")
 }
