@@ -3,8 +3,7 @@ package service
 import (
 	"context"
 	"github.com/akbarshoh/microOLX/protos/orderproto"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
+	"time"
 )
 
 type Service struct {
@@ -17,27 +16,70 @@ func New(r Repository) Service {
 	}
 }
 
-func (Service) GetOrder(context.Context, *orderproto.Request) (*orderproto.Order, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetOrder not implemented")
+func (s Service) GetOrder(ctx context.Context, request *orderproto.Request) (*orderproto.Order, error) {
+	c, cancel := context.WithTimeout(ctx, time.Second*3)
+	defer cancel()
+	o, err := s.r.GetOrder(c, *request)
+	if err != nil {
+		return nil, nil
+	}
+	return &o, nil
 }
-func (Service) Choose(context.Context, *orderproto.MealChoice) error {
-	return status.Errorf(codes.Unimplemented, "method Choose not implemented")
+func (s Service) Choose(ctx context.Context, request *orderproto.MealChoice) error {
+	c, cancel := context.WithTimeout(ctx, time.Second*3)
+	defer cancel()
+	if err := s.r.Choose(c, *request); err != nil {
+		return err
+	}
+	return nil
 }
-func (Service) Payment(context.Context, *orderproto.Request) error {
-	return status.Errorf(codes.Unimplemented, "method Payment not implemented")
+func (s Service) Payment(ctx context.Context, request *orderproto.Request) error {
+	c, cancel := context.WithTimeout(ctx, time.Second*3)
+	defer cancel()
+	if err := s.r.Payment(c, *request); err != nil {
+		return err
+	}
+	return nil
 }
-func (Service) MealList(context.Context, *orderproto.Request) (*orderproto.Meals, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method MealList not implemented")
+func (s Service) MealList(ctx context.Context, request *orderproto.Request) (*orderproto.Meals, error) {
+	c, cancel := context.WithTimeout(ctx, time.Second*3)
+	defer cancel()
+	ms, err := s.r.MealList(c, *request)
+	if err != nil {
+		return nil, err
+	}
+	return &ms, nil
 }
-func (Service) OrderList(context.Context, *orderproto.Request) (*orderproto.Orders, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method OrderList not implemented")
+func (s Service) OrderList(ctx context.Context, request *orderproto.Request) (*orderproto.Orders, error) {
+	c, cancel := context.WithTimeout(ctx, time.Second*3)
+	defer cancel()
+	os, err := s.r.OrderList(c, *request)
+	if err != nil {
+		return nil, err
+	}
+	return &os, nil
 }
-func (Service) Cancel(context.Context, *orderproto.Request) error {
-	return status.Errorf(codes.Unimplemented, "method Cancel not implemented")
+func (s Service) Cancel(ctx context.Context, request *orderproto.Request) error {
+	c, cancel := context.WithTimeout(ctx, time.Second*3)
+	defer cancel()
+	if err := s.r.Cancel(c, request); err != nil {
+		return err
+	}
+	return nil
 }
-func (Service) NewMeal(context.Context, *orderproto.Meal) error {
-	return status.Errorf(codes.Unimplemented, "method NewMeal not implemented")
+func (s Service) NewMeal(ctx context.Context, request *orderproto.Meal) error {
+	c, cancel := context.WithTimeout(ctx, time.Second*3)
+	defer cancel()
+	if err := s.r.NewMeal(c, request); err != nil {
+		return err
+	}
+	return nil
 }
-func (Service) UpdateMeal(context.Context, *orderproto.Meal) error {
-	return status.Errorf(codes.Unimplemented, "method NewOrder not implemented")
+func (s Service) UpdateMeal(ctx context.Context, request *orderproto.Meal) error {
+	c, cancel := context.WithTimeout(ctx, time.Second*3)
+	defer cancel()
+	if err := s.r.UpdateMeal(c, request); err != nil {
+		return err
+	}
+	return nil
 }

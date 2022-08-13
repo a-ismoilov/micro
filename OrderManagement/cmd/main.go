@@ -17,7 +17,6 @@ func main() {
 	if err != nil {
 		log.Fatalln(err)
 	}
-
 	lis, err := net.Listen("tcp", cfg.Port)
 	if err != nil {
 		log.Fatalln(err)

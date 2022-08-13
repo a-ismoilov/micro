@@ -8,7 +8,7 @@ import (
 type Repository interface {
 	GetOrder(ctx context.Context, request orderproto.Request) (orderproto.Order, error)
 	Payment(ctx context.Context, request orderproto.Request) error
-	Choose(ctx context.Context, request orderproto.Request) error
+	Choose(ctx context.Context, request orderproto.MealChoice) error
 	MealList(ctx context.Context, request orderproto.Request) (orderproto.Meals, error)
 	OrderList(ctx context.Context, request orderproto.Request) (orderproto.Orders, error)
 	Cancel(context.Context, *orderproto.Request) error
