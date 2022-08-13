@@ -28,7 +28,7 @@ func ConnectDB(cfg config.Config) (*sql.DB, error) {
 	}
 	m, err := migrate.NewWithDatabaseInstance(
 		"file://migrations",
-		"olx",
+		"orders",
 		driver,
 	)
 	if err != nil {
@@ -37,5 +37,5 @@ func ConnectDB(cfg config.Config) (*sql.DB, error) {
 	if err := m.Up(); err != nil && !errors.Is(err, migrate.ErrNoChange) {
 		return nil, err
 	}
-	return nil, nil
+	return db, nil
 }

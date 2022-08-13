@@ -1,6 +1,7 @@
 package userhandler
 
 import (
+	"fmt"
 	"github.com/akbarshoh/microOLX/protos/userproto"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -24,8 +25,8 @@ func New(s userproto.UserServiceClient) GinUserHandler {
 // @Produce      json
 // @Param        user  body  userproto.User true "user struct"
 // @Success      200 {object} userproto.Response
-// @Failure      400 {object} map[string]string
-// @Failure      500 {object} map[string]string
+// @Failure      400
+// @Failure      500
 // @Router       /user/log [post]
 func (g GinUserHandler) Log(c *gin.Context) {
 	a := userproto.User{}
@@ -35,7 +36,7 @@ func (g GinUserHandler) Log(c *gin.Context) {
 	}
 	ok, err := g.stub.Log(c, &a)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("%v", err)})
 		return
 	}
 	c.JSON(http.StatusOK, ok)
@@ -94,7 +95,7 @@ func (g GinUserHandler) UserList(c *gin.Context) {
 func (g GinUserHandler) LogAdmin(c *gin.Context) {
 	a := userproto.Admin{}
 	if err := c.ShouldBindJSON(&a); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err})
+		c.JSON(http.StatusBadRequest, gin.H{"error": fmt.Sprintf("%v", err)})
 		return
 	}
 	ok, err := g.stub.LogAdmin(c, &a)

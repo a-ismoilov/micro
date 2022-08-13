@@ -1,6 +1,7 @@
 package orderhandler
 
 import (
+	"fmt"
 	"github.com/akbarshoh/microOLX/protos/orderproto"
 	_ "github.com/akbarshoh/microOLX/protos/orderproto"
 	"github.com/akbarshoh/microOLX/protos/userproto"
@@ -185,12 +186,12 @@ func (g GinOrderHandler) Cancel(c *gin.Context) {
 func (g GinOrderHandler) NewMeal(c *gin.Context) {
 	m := orderproto.Meal{}
 	if err := c.ShouldBindJSON(&m); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err})
+		c.JSON(http.StatusBadRequest, gin.H{"error": fmt.Sprintf("%v", err)})
 		return
 	}
 	ok, err := g.stub.NewMeal(c, &m)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("%v", err)})
 		return
 	}
 	c.JSON(http.StatusOK, ok)
