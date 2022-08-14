@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.2.0
 // - protoc             v3.21.4
-// source: userproto/user.userproto
+// source: protos/userproto/user.proto
 
 package userproto
 
@@ -38,7 +38,7 @@ func NewUserServiceClient(cc grpc.ClientConnInterface) UserServiceClient {
 
 func (c *userServiceClient) Log(ctx context.Context, in *User, opts ...grpc.CallOption) (*Response, error) {
 	out := new(Response)
-	err := c.cc.Invoke(ctx, "/userproto.UserService/Log", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/proto.UserService/Log", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -47,7 +47,7 @@ func (c *userServiceClient) Log(ctx context.Context, in *User, opts ...grpc.Call
 
 func (c *userServiceClient) Payment(ctx context.Context, in *PayRequest, opts ...grpc.CallOption) (*Response, error) {
 	out := new(Response)
-	err := c.cc.Invoke(ctx, "/userproto.UserService/Payment", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/proto.UserService/Payment", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -56,7 +56,7 @@ func (c *userServiceClient) Payment(ctx context.Context, in *PayRequest, opts ..
 
 func (c *userServiceClient) UserList(ctx context.Context, in *Admin, opts ...grpc.CallOption) (*Users, error) {
 	out := new(Users)
-	err := c.cc.Invoke(ctx, "/userproto.UserService/UserList", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/proto.UserService/UserList", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -65,7 +65,7 @@ func (c *userServiceClient) UserList(ctx context.Context, in *Admin, opts ...grp
 
 func (c *userServiceClient) LogAdmin(ctx context.Context, in *Admin, opts ...grpc.CallOption) (*Response, error) {
 	out := new(Response)
-	err := c.cc.Invoke(ctx, "/userproto.UserService/LogAdmin", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/proto.UserService/LogAdmin", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -122,7 +122,7 @@ func _UserService_Log_Handler(srv interface{}, ctx context.Context, dec func(int
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/userproto.UserService/Log",
+		FullMethod: "/proto.UserService/Log",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserServiceServer).Log(ctx, req.(*User))
@@ -140,7 +140,7 @@ func _UserService_Payment_Handler(srv interface{}, ctx context.Context, dec func
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/userproto.UserService/Payment",
+		FullMethod: "/proto.UserService/Payment",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserServiceServer).Payment(ctx, req.(*PayRequest))
@@ -158,7 +158,7 @@ func _UserService_UserList_Handler(srv interface{}, ctx context.Context, dec fun
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/userproto.UserService/UserList",
+		FullMethod: "/proto.UserService/UserList",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserServiceServer).UserList(ctx, req.(*Admin))
@@ -176,7 +176,7 @@ func _UserService_LogAdmin_Handler(srv interface{}, ctx context.Context, dec fun
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/userproto.UserService/LogAdmin",
+		FullMethod: "/proto.UserService/LogAdmin",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserServiceServer).LogAdmin(ctx, req.(*Admin))
@@ -188,7 +188,7 @@ func _UserService_LogAdmin_Handler(srv interface{}, ctx context.Context, dec fun
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var UserService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "userproto.UserService",
+	ServiceName: "proto.UserService",
 	HandlerType: (*UserServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -209,5 +209,5 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "userproto/user.userproto",
+	Metadata: "protos/userproto/user.proto",
 }

@@ -4,17 +4,13 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type UserHandler interface {
+type Handler interface {
 	Log(ctx *gin.Context)
-	Payment(ctx *gin.Context)
+	PaymentOrder(ctx *gin.Context)
 	UserList(ctx *gin.Context)
 	LogAdmin(ctx *gin.Context)
-}
-
-type OrderHandler interface {
 	GetOrder(ctx *gin.Context)
 	Choose(ctx *gin.Context)
-	Payment(ctx *gin.Context)
 	MealList(ctx *gin.Context)
 	OrderList(ctx *gin.Context)
 	Cancel(ctx *gin.Context)

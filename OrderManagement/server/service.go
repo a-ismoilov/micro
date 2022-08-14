@@ -8,7 +8,7 @@ import (
 type Service interface {
 	GetOrder(context.Context, *orderproto.Request) (*orderproto.Order, error)
 	Choose(context.Context, *orderproto.MealChoice) error
-	Payment(context.Context, *orderproto.Request) error
+	Payment(context.Context, *orderproto.Request) (int, error)
 	MealList(context.Context, *orderproto.Request) (*orderproto.Meals, error)
 	OrderList(context.Context, *orderproto.Request) (*orderproto.Orders, error)
 	Cancel(context.Context, *orderproto.Request) error

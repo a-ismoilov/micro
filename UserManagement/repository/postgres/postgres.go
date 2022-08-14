@@ -41,15 +41,12 @@ func (p PostgresRepository) Payment(ctx context.Context, request *userproto.PayR
 	defer cancel()
 	tx, err := p.DB.Begin()
 	if err != nil {
+		log.Println(err)
 		return err
 	}
-	if _, err := tx.ExecContext(c, `with b as (select price from orders where id=$1)
-		update users set budget=budget-b where id=$2`, request.OrderId, request.Id); err != nil {
+	if _, err := tx.ExecContext(c, "update users set budget=budget-$1 where id=$2", request.Price, request.Id); err != nil {
 		tx.Rollback()
-		return err
-	}
-	if _, err := tx.ExecContext(c, "update orders set closed_at=current_timestamp"); err != nil {
-		tx.Rollback()
+		log.Println(err)
 		return err
 	}
 	tx.Commit()

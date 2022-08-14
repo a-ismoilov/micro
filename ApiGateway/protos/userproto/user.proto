@@ -23,6 +23,7 @@ message Users{
 message payRequest{
   int32 id = 1;
   int32 order_id = 2;
+  int32 price = 3;
 }
 
 message User{

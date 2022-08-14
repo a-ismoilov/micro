@@ -32,16 +32,17 @@ func (s *Server) Choose(ctx context.Context, request *orderproto.MealChoice) (*o
 	if err := s.service.Choose(c, request); err != nil {
 		return nil, err
 	}
-	ok := orderproto.OK{OK: "meal chose"}
+	ok := orderproto.OK{OK: 1}
 	return &ok, nil
 }
 func (s *Server) Payment(ctx context.Context, request *orderproto.Request) (*orderproto.OK, error) {
 	c, cancel := context.WithTimeout(ctx, time.Second*3)
 	defer cancel()
-	if err := s.service.Payment(c, request); err != nil {
+	price, err := s.service.Payment(c, request)
+	if err != nil {
 		return nil, err
 	}
-	ok := orderproto.OK{OK: "payed"}
+	ok := orderproto.OK{OK: int32(price)}
 	return &ok, nil
 }
 func (s *Server) MealList(ctx context.Context, request *orderproto.Request) (*orderproto.Meals, error) {
@@ -69,7 +70,7 @@ func (s *Server) Cancel(ctx context.Context, request *orderproto.Request) (*orde
 	if err := s.service.Cancel(c, request); err != nil {
 		return nil, err
 	}
-	ok := orderproto.OK{OK: "canceled"}
+	ok := orderproto.OK{OK: 1}
 	return &ok, nil
 }
 func (s *Server) NewMeal(ctx context.Context, request *orderproto.Meal) (*orderproto.OK, error) {
@@ -78,7 +79,7 @@ func (s *Server) NewMeal(ctx context.Context, request *orderproto.Meal) (*orderp
 	if err := s.service.NewMeal(c, request); err != nil {
 		return nil, err
 	}
-	ok := orderproto.OK{OK: "added"}
+	ok := orderproto.OK{OK: 1}
 	return &ok, nil
 }
 func (s *Server) UpdateMeal(ctx context.Context, request *orderproto.Meal) (*orderproto.OK, error) {
@@ -87,6 +88,6 @@ func (s *Server) UpdateMeal(ctx context.Context, request *orderproto.Meal) (*ord
 	if err := s.service.UpdateMeal(c, request); err != nil {
 		return nil, err
 	}
-	ok := orderproto.OK{OK: "updated"}
+	ok := orderproto.OK{OK: 1}
 	return &ok, nil
 }

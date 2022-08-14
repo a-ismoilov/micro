@@ -202,7 +202,7 @@ const docTemplate = `{
             }
         },
         "/admin/user-list": {
-            "get": {
+            "post": {
                 "description": "admin gets users list",
                 "consumes": [
                     "application/json"
@@ -253,7 +253,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/user/get-order:id": {
+        "/user/get-order/:id": {
             "get": {
                 "description": "get order by order_id",
                 "consumes": [
@@ -339,7 +339,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/user/log/cancel:id": {
+        "/user/log/cancel/:id": {
             "delete": {
                 "description": "cancels user order",
                 "consumes": [
@@ -381,6 +381,46 @@ const docTemplate = `{
                             "type": "object",
                             "additionalProperties": true
                         }
+                    }
+                }
+            }
+        },
+        "/user/log/pay": {
+            "post": {
+                "description": "user pays his order",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "Payment",
+                "parameters": [
+                    {
+                        "description": "user id and order id",
+                        "name": "order_id",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/userproto.PayRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/orderproto.OK"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
                     }
                 }
             }
@@ -469,54 +509,6 @@ const docTemplate = `{
                     }
                 }
             }
-        },
-        "/user/pay": {
-            "post": {
-                "description": "user pays his order",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "user"
-                ],
-                "summary": "Payment",
-                "parameters": [
-                    {
-                        "description": "user id and order id",
-                        "name": "order_id",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/userproto.PayRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/orderproto.OK"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": true
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": true
-                        }
-                    }
-                }
-            }
         }
     },
     "definitions": {
@@ -538,6 +530,9 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "id": {
+                    "type": "integer"
+                },
+                "meal_id": {
                     "type": "integer"
                 },
                 "order_id": {
@@ -616,6 +611,9 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "order_id": {
+                    "type": "integer"
+                },
+                "price": {
                     "type": "integer"
                 }
             }
