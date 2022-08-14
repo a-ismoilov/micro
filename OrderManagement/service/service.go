@@ -21,7 +21,7 @@ func (s Service) GetOrder(ctx context.Context, request *orderproto.Request) (*or
 	defer cancel()
 	o, err := s.r.GetOrder(c, *request)
 	if err != nil {
-		return nil, nil
+		return &o, nil
 	}
 	return &o, nil
 }
@@ -33,13 +33,14 @@ func (s Service) Choose(ctx context.Context, request *orderproto.MealChoice) err
 	}
 	return nil
 }
-func (s Service) Payment(ctx context.Context, request *orderproto.Request) error {
+func (s Service) Payment(ctx context.Context, request *orderproto.Request) (int, error) {
 	c, cancel := context.WithTimeout(ctx, time.Second*3)
 	defer cancel()
-	if err := s.r.Payment(c, *request); err != nil {
-		return err
+	price, err := s.r.Payment(c, *request)
+	if err != nil {
+		return 0, err
 	}
-	return nil
+	return price, nil
 }
 func (s Service) MealList(ctx context.Context, request *orderproto.Request) (*orderproto.Meals, error) {
 	c, cancel := context.WithTimeout(ctx, time.Second*3)

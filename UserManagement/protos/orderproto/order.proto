@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package proto;
 
-option go_package = "github.com/akbarshoh/microOLX/userproto";
+option go_package = "github.com/akbarshoh/microOLX/orderproto";
 
 message Order {
   int32 id = 1;
@@ -35,10 +35,11 @@ message Meals {
 message MealChoice{
   int32 id = 1;
   int32 order_id = 2;
+  int32 meal_id = 3;
 }
 
 message OK {
-  string OK = 1;
+  int32 OK = 1;
 }
 
 message Request {

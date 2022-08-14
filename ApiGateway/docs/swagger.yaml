@@ -12,6 +12,8 @@ definitions:
     properties:
       id:
         type: integer
+      meal_id:
+        type: integer
       order_id:
         type: integer
     type: object
@@ -61,6 +63,8 @@ definitions:
       id:
         type: integer
       order_id:
+        type: integer
+      price:
         type: integer
     type: object
   userproto.Response:
@@ -215,7 +219,7 @@ paths:
       tags:
       - admin
   /admin/user-list:
-    get:
+    post:
       consumes:
       - application/json
       description: admin gets users list
@@ -248,7 +252,7 @@ paths:
       summary: users
       tags:
       - admin
-  /user/get-order:id:
+  /user/get-order/:id:
     get:
       consumes:
       - application/json
@@ -305,7 +309,7 @@ paths:
       summary: UserLogin
       tags:
       - user
-  /user/log/cancel:id:
+  /user/log/cancel/:id:
     delete:
       consumes:
       - application/json
@@ -334,6 +338,32 @@ paths:
             additionalProperties: true
             type: object
       summary: Cancel
+      tags:
+      - user
+  /user/log/pay:
+    post:
+      consumes:
+      - application/json
+      description: user pays his order
+      parameters:
+      - description: user id and order id
+        in: body
+        name: order_id
+        required: true
+        schema:
+          $ref: '#/definitions/userproto.PayRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/orderproto.OK'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Payment
       tags:
       - user
   /user/menu:
@@ -391,38 +421,6 @@ paths:
             additionalProperties: true
             type: object
       summary: Choose
-      tags:
-      - user
-  /user/pay:
-    post:
-      consumes:
-      - application/json
-      description: user pays his order
-      parameters:
-      - description: user id and order id
-        in: body
-        name: order_id
-        required: true
-        schema:
-          $ref: '#/definitions/userproto.PayRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/orderproto.OK'
-        "400":
-          description: Bad Request
-          schema:
-            additionalProperties: true
-            type: object
-        "500":
-          description: Internal Server Error
-          schema:
-            additionalProperties: true
-            type: object
-      summary: Payment
       tags:
       - user
 swagger: "2.0"
