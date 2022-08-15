@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"github.com/akbarshoh/microOLX/protos/orderproto"
+	"log"
 	"time"
 )
 
@@ -23,6 +24,7 @@ func (s Service) GetOrder(ctx context.Context, request *orderproto.Request) (*or
 	if err != nil {
 		return &o, nil
 	}
+	log.Println(o)
 	return &o, nil
 }
 func (s Service) Choose(ctx context.Context, request *orderproto.MealChoice) error {

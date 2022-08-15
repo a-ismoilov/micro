@@ -253,7 +253,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/user/get-order/:id": {
+        "/user/get-order/{id}": {
             "get": {
                 "description": "get order by order_id",
                 "consumes": [
@@ -555,21 +555,24 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "OK": {
-                    "type": "string"
+                    "type": "integer"
                 }
             }
         },
         "orderproto.Order": {
             "type": "object",
             "properties": {
-                "basket_id": {
-                    "type": "integer"
-                },
                 "closed_at": {
                     "type": "string"
                 },
                 "id": {
                     "type": "integer"
+                },
+                "meal_list": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
                 },
                 "opened_at": {
                     "type": "string"
