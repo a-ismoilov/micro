@@ -27,16 +27,18 @@ definitions:
   orderproto.OK:
     properties:
       OK:
-        type: string
+        type: integer
     type: object
   orderproto.Order:
     properties:
-      basket_id:
-        type: integer
       closed_at:
         type: string
       id:
         type: integer
+      meal_list:
+        items:
+          type: integer
+        type: array
       opened_at:
         type: string
       price:
@@ -252,7 +254,7 @@ paths:
       summary: users
       tags:
       - admin
-  /user/get-order/:id:
+  /user/get-order/{id}:
     get:
       consumes:
       - application/json

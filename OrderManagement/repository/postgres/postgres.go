@@ -36,6 +36,7 @@ func (p PostgresRepository) GetOrder(ctx context.Context, request orderproto.Req
 	for i := range ids {
 		o.MealList = append(o.MealList, int32(ids[i]))
 	}
+	log.Println(o)
 	return o, nil
 }
 

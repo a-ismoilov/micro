@@ -6,6 +6,7 @@ import (
 	"github.com/akbarshoh/microOLX/protos/userproto"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"strconv"
 )
 
 type Handler struct {
@@ -30,14 +31,14 @@ func New(os orderproto.OrderServiceClient, us userproto.UserServiceClient) Handl
 // @Success      200 {object} orderproto.Order
 // @Failure      400 {object} map[string]any
 // @Failure      500 {object} map[string]any
-// @Router       /user/get-order/:id [get]
+// @Router       /user/get-order/{id} [get]
 func (h Handler) GetOrder(c *gin.Context) {
-	//id, err := strconv.Atoi(c.Param("id"))
-	//if err != nil {
-	//	c.JSON(http.StatusBadRequest, gin.H{"error": fmt.Sprintf("%v, %s", err, c.Param("id"))})
-	//	return
-	//}
-	o, err := h.OS.GetOrder(c, &orderproto.Request{Id: 6})
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": fmt.Sprintf("%v, %s", err, c.Param("id"))})
+		return
+	}
+	o, err := h.OS.GetOrder(c, &orderproto.Request{Id: int32(id)})
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("%v", err)})
 		return

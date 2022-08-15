@@ -3,6 +3,7 @@ package server
 import (
 	"context"
 	"github.com/akbarshoh/microOLX/protos/orderproto"
+	"log"
 	"time"
 )
 
@@ -24,6 +25,7 @@ func (s *Server) GetOrder(ctx context.Context, request *orderproto.Request) (*or
 	if err != nil {
 		return nil, err
 	}
+	log.Println(o)
 	return o, nil
 }
 func (s *Server) Choose(ctx context.Context, request *orderproto.MealChoice) (*orderproto.OK, error) {
